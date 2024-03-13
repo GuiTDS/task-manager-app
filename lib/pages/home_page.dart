@@ -3,10 +3,10 @@ import 'package:task_management_app/pages/profile_page.dart';
 import 'package:task_management_app/pages/task_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -15,7 +15,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     pageController = PageController(initialPage: actualPage);
   }
@@ -31,11 +30,16 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: PageView(
         controller: pageController,
+        physics: const NeverScrollableScrollPhysics(),
         children: const [
           TaskPage(),
           ProfilePage(),
         ],
-        onPageChanged: (page) => setActualPage(page),
+        onPageChanged: (page) {
+          if (page != actualPage) {
+            setActualPage(page);
+          }
+        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: actualPage,
@@ -49,11 +53,15 @@ class _HomePageState extends State<HomePage> {
             label: '',
           ),
         ],
-        onTap: (value) => pageController.animateToPage(
-          value,
-          duration: const Duration(milliseconds: 400),
-          curve: Curves.ease,
-        ),
+        onTap: (value) {
+          if (value != actualPage) {
+            pageController.animateToPage(
+              value,
+              duration: const Duration(milliseconds: 400),
+              curve: Curves.ease,
+            );
+          }
+        },
       ),
     );
   }

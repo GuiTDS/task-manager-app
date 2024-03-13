@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_management_app/components/task_filter_button.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -24,67 +25,33 @@ class _TaskPageState extends State<TaskPage> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 15,
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () => print('clicou'),
-                  child: const Row(
-                    children: [
-                      Text('Complete'),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        '65',
-                      ),
-                    ],
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () => print('clicou'),
-                  child: const Row(
-                    children: [
-                      Text('Complete'),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        '65',
-                      ),
-                    ],
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () => print('clicou'),
-                  child: const Row(
-                    children: [
-                      Text('Complete'),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        '65',
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18),
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 15,
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemBuilder: (context, index) => const Text('item'),
-              itemCount: 50,
+            const SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  TaskFilterButton(),
+                  SizedBox(width: 10,),
+                  TaskFilterButton(),
+                  SizedBox(width: 10,),
+                  TaskFilterButton(),
+                ],
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) => const Text('item'),
+                itemCount: 50,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
