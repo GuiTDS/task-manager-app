@@ -33,43 +33,41 @@ class _TaskPageState extends State<TaskPage> {
           size: 30,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 15,
-            ),
-            const SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  TaskFilterButton(),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  TaskFilterButton(),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  TaskFilterButton(),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Expanded(
-              child: ListView.separated(
-                itemBuilder: (context, index) => const TaskCard(),
-                itemCount: 6,
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 10,
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 15,
+          ),
+          const SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                TaskFilterButton(),
+                SizedBox(
+                  width: 10,
                 ),
+                TaskFilterButton(),
+                SizedBox(
+                  width: 10,
+                ),
+                TaskFilterButton(),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Expanded(
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 18),
+              itemBuilder: (context, index) => const TaskCard(),
+              itemCount: 6,
+              separatorBuilder: (context, index) => const SizedBox(
+                height: 10,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

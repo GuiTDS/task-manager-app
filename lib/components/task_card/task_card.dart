@@ -30,11 +30,15 @@ class TaskCard extends StatelessWidget {
             ),
             const Row(
               children: [
-                TaskCardCategory(),
+                TaskCardCategory(urgency: Urgency.high),
                 SizedBox(
                   width: 5,
                 ),
-                TaskCardCategory(),
+                TaskCardCategory(urgency: Urgency.low),
+                SizedBox(
+                  width: 5,
+                ),
+                TaskCardCategory(urgency: Urgency.medium)
               ],
             ),
             Row(
