@@ -55,10 +55,8 @@ class _HomePageState extends State<HomePage> {
         ],
         onTap: (value) {
           if (value != actualPage) {
-            pageController.animateToPage(
+            pageController.jumpToPage(
               value,
-              duration: const Duration(milliseconds: 400),
-              curve: Curves.ease,
             );
           }
         },

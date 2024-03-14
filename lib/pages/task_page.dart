@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_management_app/components/task_card/task_card.dart';
 import 'package:task_management_app/components/task_filter_button.dart';
 
 class TaskPage extends StatefulWidget {
@@ -25,6 +26,13 @@ class _TaskPageState extends State<TaskPage> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(
+          Icons.add,
+          size: 30,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
         child: Column(
@@ -37,17 +45,27 @@ class _TaskPageState extends State<TaskPage> {
               child: Row(
                 children: [
                   TaskFilterButton(),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   TaskFilterButton(),
-                  SizedBox(width: 10,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   TaskFilterButton(),
                 ],
               ),
             ),
+            const SizedBox(
+              height: 15,
+            ),
             Expanded(
-              child: ListView.builder(
-                itemBuilder: (context, index) => const Text('item'),
-                itemCount: 50,
+              child: ListView.separated(
+                itemBuilder: (context, index) => const TaskCard(),
+                itemCount: 6,
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 10,
+                ),
               ),
             ),
           ],
