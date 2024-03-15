@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_management_app/components/task_card/task_card.dart';
+import 'package:task_management_app/components/task_card/task_card_category.dart';
+import 'package:task_management_app/components/task_card/task_card_urgency.dart';
 import 'package:task_management_app/components/task_filter_button.dart';
 
 class TaskPage extends StatefulWidget {
@@ -10,6 +12,14 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
+  int activeButtonIndex = 0; // Estado para rastrear o botão ativo
+
+  void setActiveButtonIndex(int index) {
+    setState(() {
+      activeButtonIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,19 +48,29 @@ class _TaskPageState extends State<TaskPage> {
           const SizedBox(
             height: 15,
           ),
-          const SingleChildScrollView(
+          SingleChildScrollView(
             scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.only(left: 18),
             child: Row(
               children: [
-                TaskFilterButton(),
-                SizedBox(
+                TaskFilterButton(
+                  onPressed: () => setActiveButtonIndex(0),
+                  isActive: activeButtonIndex == 0,
+                ),
+                const SizedBox(
                   width: 10,
                 ),
-                TaskFilterButton(),
-                SizedBox(
+                TaskFilterButton(
+                  onPressed: () => setActiveButtonIndex(1),
+                  isActive: activeButtonIndex == 1,
+                ),
+                const SizedBox(
                   width: 10,
                 ),
-                TaskFilterButton(),
+                TaskFilterButton(
+                  onPressed: () => setActiveButtonIndex(2),
+                  isActive: activeButtonIndex == 2,
+                ),
               ],
             ),
           ),
@@ -59,8 +79,9 @@ class _TaskPageState extends State<TaskPage> {
           ),
           Expanded(
             child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
-              itemBuilder: (context, index) => const TaskCard(),
+              padding: const EdgeInsets.only(left: 18, right: 18, bottom: 75),
+              itemBuilder: (context, index) => const TaskCard(
+                  urgency: Urgency.high, category: Category.finantial),
               itemCount: 6,
               separatorBuilder: (context, index) => const SizedBox(
                 height: 10,

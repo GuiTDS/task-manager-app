@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:task_management_app/components/task_card/task_card_category.dart';
+import 'package:task_management_app/components/task_card/task_card_urgency.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({super.key});
+  final Category? category;
+  final Urgency urgency;
+  const TaskCard({super.key, required this.urgency, this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +31,13 @@ class TaskCard extends StatelessWidget {
                     icon: const Icon(Icons.more_horiz))
               ],
             ),
-            const Row(
+            Row(
               children: [
-                TaskCardCategory(urgency: Urgency.high),
-                SizedBox(
+                TaskCardUrgency(urgency: urgency),
+                const SizedBox(
                   width: 5,
                 ),
-                TaskCardCategory(urgency: Urgency.low),
-                SizedBox(
-                  width: 5,
-                ),
-                TaskCardCategory(urgency: Urgency.medium)
+                category != null ? TaskCardCategory(category: category!) : const SizedBox(), 
               ],
             ),
             Row(

@@ -1,26 +1,50 @@
 import 'package:flutter/material.dart';
 
-enum Urgency { low, medium, high }
+enum Category {
+  work,
+  personal,
+  education,
+  health,
+  finantial,
+  house,
+  travel,
+  others
+}
 
 class TaskCardCategory extends StatelessWidget {
-  final Urgency urgency;
+  final Category category;
 
-  const TaskCardCategory({super.key, required this.urgency});
+  const TaskCardCategory({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
     String title;
     Color? color;
-    switch (urgency) {
-      case Urgency.low:
-        color = Colors.green[300];
-        title = 'Low';
-      case Urgency.medium:
+    switch (category) {
+      case Category.work:
+        color = Colors.blueGrey;
+        title = 'Work';
+      case Category.personal:
         color = Colors.yellow;
-        title = 'Medium';
-      case Urgency.high:
-        color = Colors.red[200];
-        title = 'High';
+        title = 'Personal';
+      case Category.education:
+        color = Colors.deepPurple;
+        title = 'Education';
+      case Category.health:
+        color = Colors.lightGreen;
+        title = 'Health';
+      case Category.finantial:
+        color = Colors.amber;
+        title = 'Finantial';
+      case Category.house:
+        color = Colors.brown;
+        title = 'House';
+      case Category.travel:
+        color = Colors.teal;
+        title = 'Travel';
+      case Category.others:
+        color = Colors.red;
+        title = 'Others';
     }
     return Container(
       padding: const EdgeInsets.symmetric(
