@@ -1,15 +1,5 @@
 import 'package:flutter/material.dart';
-
-enum Category {
-  work,
-  personal,
-  education,
-  health,
-  finantial,
-  house,
-  travel,
-  others
-}
+import 'package:task_management_app/models/task_model.dart';
 
 class TaskCardCategory extends StatelessWidget {
   final Category category;

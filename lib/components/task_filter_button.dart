@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 class TaskFilterButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool isActive;
+  final String title;
 
   const TaskFilterButton({
     Key? key,
     required this.onPressed,
+    required this.title,
     this.isActive = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
-      width: 140,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
@@ -26,7 +28,7 @@ class TaskFilterButton extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              'Complete ',
+              '$title ',
               style: TextStyle(
                 color: isActive ? Colors.white : Colors.black,
               ),
@@ -37,7 +39,7 @@ class TaskFilterButton extends StatelessWidget {
                 borderRadius: const BorderRadius.horizontal(
                   left: Radius.circular(12),
                   right: Radius.circular(12),
-                ),
+                )
               ),
               width: 30,
               child: Row(
@@ -52,6 +54,7 @@ class TaskFilterButton extends StatelessWidget {
                 ],
               ),
             ),
+            Container(padding: const EdgeInsets.only(right: 10),),
           ],
         ),
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-enum Urgency { low, medium, high }
+import 'package:task_management_app/models/task_model.dart';
 
 class TaskCardUrgency extends StatelessWidget {
   final Urgency urgency;

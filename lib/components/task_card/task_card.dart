@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:task_management_app/components/task_card/task_card_category.dart';
 import 'package:task_management_app/components/task_card/task_card_urgency.dart';
+import 'package:task_management_app/models/task_model.dart';
 
 class TaskCard extends StatelessWidget {
+  final String title;
+  final DateTime date;
   final Category? category;
   final Urgency urgency;
-  const TaskCard({super.key, required this.urgency, this.category});
+  const TaskCard(
+      {super.key,
+      required this.title,
+      required this.date,
+      required this.urgency,
+      this.category});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +30,9 @@ class TaskCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Task title',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                 Text(
+                  title,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 IconButton(
                     onPressed: () => print('clicked'),
@@ -37,21 +45,23 @@ class TaskCard extends StatelessWidget {
                 const SizedBox(
                   width: 5,
                 ),
-                category != null ? TaskCardCategory(category: category!) : const SizedBox(), 
+                category != null
+                    ? TaskCardCategory(category: category!)
+                    : const SizedBox(),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
+                 Row(
                   children: [
-                    Icon(Icons.calendar_month),
-                    SizedBox(
+                    const Icon(Icons.calendar_month),
+                    const SizedBox(
                       width: 10,
                     ),
                     Text(
-                      '14/03/2024',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      date.toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
