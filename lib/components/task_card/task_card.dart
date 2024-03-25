@@ -8,11 +8,13 @@ class TaskCard extends StatelessWidget {
   final DateTime date;
   final Category? category;
   final Urgency urgency;
+  final Status status;
   const TaskCard(
       {super.key,
       required this.title,
       required this.date,
       required this.urgency,
+      required this.status,
       this.category});
 
   @override
@@ -30,9 +32,10 @@ class TaskCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                 Text(
+                Text(
                   title,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 IconButton(
                     onPressed: () => print('clicked'),
@@ -53,14 +56,14 @@ class TaskCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                 Row(
+                Row(
                   children: [
                     const Icon(Icons.calendar_month),
                     const SizedBox(
                       width: 10,
                     ),
                     Text(
-                      date.toString(),
+                      '${date.day}/${date.month < 10 ? '0${date.month}' : date.month}/${date.year}',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],

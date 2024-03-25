@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_management_app/components/task_card/task_card.dart';
 import 'package:task_management_app/components/task_filter_button.dart';
+import 'package:task_management_app/models/task_model.dart';
 import 'package:task_management_app/pages/task_form_page.dart';
 import 'package:task_management_app/repositories/task_repository.dart';
 
@@ -15,6 +16,9 @@ class TaskPage extends StatefulWidget {
 class _TaskPageState extends State<TaskPage> {
   int activeButtonIndex = 0; // Estado para rastrear o botão ativo
   late TaskRepository taskRepository;
+  int toDoTasks = 0;
+  int inReviewTasks = 0;
+  int completedTasks = 0;
 
   void setActiveButtonIndex(int index) {
     setState(() {
@@ -22,9 +26,26 @@ class _TaskPageState extends State<TaskPage> {
     });
   }
 
+  calculateNumberOfTasks() {
+    toDoTasks = 0;
+    inReviewTasks = 0;
+    completedTasks = 0;
+    for (TaskModel element in taskRepository.list) {
+      if (element.status == Status.toDo) {
+        toDoTasks++;
+      } else if (element.status == Status.inReview) {
+        inReviewTasks++;
+      } else {
+        completedTasks++;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     taskRepository = Provider.of<TaskRepository>(context);
+    calculateNumberOfTasks();
+    
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(
@@ -66,6 +87,7 @@ class _TaskPageState extends State<TaskPage> {
                   onPressed: () => setActiveButtonIndex(0),
                   title: 'To Do',
                   isActive: activeButtonIndex == 0,
+                  quantity: toDoTasks,
                 ),
                 const SizedBox(
                   width: 10,
@@ -74,6 +96,7 @@ class _TaskPageState extends State<TaskPage> {
                   onPressed: () => setActiveButtonIndex(1),
                   title: 'In Review',
                   isActive: activeButtonIndex == 1,
+                  quantity: inReviewTasks,
                 ),
                 const SizedBox(
                   width: 10,
@@ -82,6 +105,7 @@ class _TaskPageState extends State<TaskPage> {
                   onPressed: () => setActiveButtonIndex(2),
                   title: 'Completed',
                   isActive: activeButtonIndex == 2,
+                  quantity: completedTasks,
                 ),
               ],
             ),
@@ -91,8 +115,20 @@ class _TaskPageState extends State<TaskPage> {
           ),
           Expanded(
             child: taskRepository.list.isEmpty
-                ? const Center(
-                    child: Text('Nenhuma Tarefa Cadastrada'),
+                ? Column(
+                    children: [
+                      const SizedBox(
+                        height: 70,
+                      ),
+                      const Text(
+                        'No Tasks Found',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Image.asset('assets/images/mascot.png', height: 300),
+                    ],
                   )
                 : ListView.separated(
                     padding:
@@ -101,7 +137,8 @@ class _TaskPageState extends State<TaskPage> {
                         title: taskRepository.list[index].title,
                         date: taskRepository.list[index].dateTime,
                         urgency: taskRepository.list[index].urgency,
-                        category: taskRepository.list[index].category),
+                        category: taskRepository.list[index].category,
+                        status: taskRepository.list[index].status),
                     itemCount: taskRepository.list.length,
                     separatorBuilder: (context, index) => const SizedBox(
                       height: 10,

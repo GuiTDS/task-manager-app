@@ -142,8 +142,16 @@ class _TaskFormPageState extends State<TaskFormPage> {
                           urgency: selectedUrgency!,
                           category: selectedCategory!,
                           dateTime: DateTime(int.parse(date[2]),
-                              int.parse(date[1]), int.parse(date[0])));
+                              int.parse(date[1]), int.parse(date[0])),
+                          status: Status.toDo);
                       taskRepository.save(task);
+
+                      /* Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const TaskPage(),
+                          )); */
+                      Navigator.pop(context);
                     },
                     icon: const Icon(Icons.add, color: Colors.black),
                     label: const Text(

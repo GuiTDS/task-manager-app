@@ -4,17 +4,17 @@ class TaskFilterButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool isActive;
   final String title;
-
+  final int quantity;
   const TaskFilterButton({
     Key? key,
     required this.onPressed,
     required this.title,
+    required this.quantity,
     this.isActive = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return SizedBox(
       child: ElevatedButton(
         onPressed: onPressed,
@@ -35,18 +35,17 @@ class TaskFilterButton extends StatelessWidget {
             ),
             Container(
               decoration: BoxDecoration(
-                color: isActive ? Colors.green : Colors.grey,
-                borderRadius: const BorderRadius.horizontal(
-                  left: Radius.circular(12),
-                  right: Radius.circular(12),
-                )
-              ),
+                  color: isActive ? Colors.green : Colors.grey,
+                  borderRadius: const BorderRadius.horizontal(
+                    left: Radius.circular(12),
+                    right: Radius.circular(12),
+                  )),
               width: 30,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '30',
+                    '$quantity',
                     style: TextStyle(
                       color: isActive ? Colors.black : Colors.white,
                     ),
@@ -54,7 +53,9 @@ class TaskFilterButton extends StatelessWidget {
                 ],
               ),
             ),
-            Container(padding: const EdgeInsets.only(right: 10),),
+            Container(
+              padding: const EdgeInsets.only(right: 10),
+            ),
           ],
         ),
       ),
