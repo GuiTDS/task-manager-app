@@ -17,13 +17,13 @@ class TaskModel {
   final String title;
   final Urgency urgency;
   final Category category;
-  final DateTime dateTime;
-  final Status status;
+  final DateTime date;
+  Status status;
 
-  const TaskModel(
+  TaskModel(
       {required this.title,
       required this.urgency,
       required this.category,
-      required this.dateTime,
+      required this.date,
       required this.status});
 }

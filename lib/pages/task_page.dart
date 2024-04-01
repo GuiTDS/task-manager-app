@@ -14,38 +14,44 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-  int activeButtonIndex = 0; // Estado para rastrear o botão ativo
   late TaskRepository taskRepository;
-  int toDoTasks = 0;
-  int inReviewTasks = 0;
-  int completedTasks = 0;
+  List<TaskModel> todoList = [];
+  List<TaskModel> inReviewList = [];
+  List<TaskModel> completedList = [];
+  List<TaskModel> currList = [];
+  int activeButtonIndex = 0;
 
-  void setActiveButtonIndex(int index) {
+  @override
+  void initState() {
+    super.initState();
+    taskRepository = Provider.of<TaskRepository>(context, listen: false);
+    todoList = taskRepository.todoList;
+    inReviewList = taskRepository.inReviewList;
+    completedList = taskRepository.completedList;
+    currList = todoList;
+  }
+
+  setActiveButtonIndex(int index) {
     setState(() {
       activeButtonIndex = index;
+      if (activeButtonIndex == 0) {
+        currList = todoList;
+      } else if (activeButtonIndex == 1) {
+        currList = inReviewList;
+      } else {
+        currList = completedList;
+      }
     });
   }
 
-  calculateNumberOfTasks() {
-    toDoTasks = 0;
-    inReviewTasks = 0;
-    completedTasks = 0;
-    for (TaskModel element in taskRepository.list) {
-      if (element.status == Status.toDo) {
-        toDoTasks++;
-      } else if (element.status == Status.inReview) {
-        inReviewTasks++;
-      } else {
-        completedTasks++;
-      }
-    }
+  completeTask(TaskModel task) {
+    setState(() {
+      taskRepository.completeTask(task);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    taskRepository = Provider.of<TaskRepository>(context);
-    calculateNumberOfTasks();
-    
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(
@@ -87,7 +93,7 @@ class _TaskPageState extends State<TaskPage> {
                   onPressed: () => setActiveButtonIndex(0),
                   title: 'To Do',
                   isActive: activeButtonIndex == 0,
-                  quantity: toDoTasks,
+                  quantity: todoList.length,
                 ),
                 const SizedBox(
                   width: 10,
@@ -96,7 +102,7 @@ class _TaskPageState extends State<TaskPage> {
                   onPressed: () => setActiveButtonIndex(1),
                   title: 'In Review',
                   isActive: activeButtonIndex == 1,
-                  quantity: inReviewTasks,
+                  quantity: inReviewList.length,
                 ),
                 const SizedBox(
                   width: 10,
@@ -105,7 +111,7 @@ class _TaskPageState extends State<TaskPage> {
                   onPressed: () => setActiveButtonIndex(2),
                   title: 'Completed',
                   isActive: activeButtonIndex == 2,
-                  quantity: completedTasks,
+                  quantity: completedList.length,
                 ),
               ],
             ),
@@ -114,7 +120,7 @@ class _TaskPageState extends State<TaskPage> {
             height: 15,
           ),
           Expanded(
-            child: taskRepository.list.isEmpty
+            child: currList.isEmpty
                 ? Column(
                     children: [
                       const SizedBox(
@@ -134,12 +140,10 @@ class _TaskPageState extends State<TaskPage> {
                     padding:
                         const EdgeInsets.only(left: 18, right: 18, bottom: 75),
                     itemBuilder: (context, index) => TaskCard(
-                        title: taskRepository.list[index].title,
-                        date: taskRepository.list[index].dateTime,
-                        urgency: taskRepository.list[index].urgency,
-                        category: taskRepository.list[index].category,
-                        status: taskRepository.list[index].status),
-                    itemCount: taskRepository.list.length,
+                      task: currList[index],
+                      onPressed: () => completeTask(currList[index]),
+                    ),
+                    itemCount: currList.length,
                     separatorBuilder: (context, index) => const SizedBox(
                       height: 10,
                     ),

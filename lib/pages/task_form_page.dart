@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:task_management_app/models/task_model.dart';
+import 'package:task_management_app/pages/task_page.dart';
 import 'package:task_management_app/repositories/task_repository.dart';
 
 class TaskFormPage extends StatefulWidget {
@@ -141,17 +142,17 @@ class _TaskFormPageState extends State<TaskFormPage> {
                           title: _titleController.text,
                           urgency: selectedUrgency!,
                           category: selectedCategory!,
-                          dateTime: DateTime(int.parse(date[2]),
+                          date: DateTime(int.parse(date[2]),
                               int.parse(date[1]), int.parse(date[0])),
                           status: Status.toDo);
                       taskRepository.save(task);
 
-                      /* Navigator.pushReplacement(
+                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const TaskPage(),
-                          )); */
-                      Navigator.pop(context);
+                          )); 
+                      // Navigator.pop(context);
                     },
                     icon: const Icon(Icons.add, color: Colors.black),
                     label: const Text(

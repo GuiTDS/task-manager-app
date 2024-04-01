@@ -3,20 +3,16 @@ import 'package:task_management_app/components/task_card/task_card_category.dart
 import 'package:task_management_app/components/task_card/task_card_urgency.dart';
 import 'package:task_management_app/models/task_model.dart';
 
-class TaskCard extends StatelessWidget {
-  final String title;
-  final DateTime date;
-  final Category? category;
-  final Urgency urgency;
-  final Status status;
-  const TaskCard(
-      {super.key,
-      required this.title,
-      required this.date,
-      required this.urgency,
-      required this.status,
-      this.category});
+class TaskCard extends StatefulWidget {
+  final TaskModel task;
+  final VoidCallback onPressed;
+  const TaskCard({super.key, required this.task, required this.onPressed});
 
+  @override
+  State<TaskCard> createState() => _TaskCardState();
+}
+
+class _TaskCardState extends State<TaskCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,29 +24,45 @@ class TaskCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  title,
+                  widget.task.title,
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                IconButton(
-                    onPressed: () => print('clicked'),
-                    icon: const Icon(Icons.more_horiz))
+                PopupMenuButton(
+                  icon: const Icon(Icons.more_horiz, color: Colors.black),
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                    const PopupMenuItem(
+                      value: 'editar',
+                      child: ListTile(
+                        leading: Icon(Icons.edit),
+                        title: Text('Editar'),
+                      ),
+                    ),
+                    const PopupMenuItem(
+                      value: 'excluir',
+                      child: ListTile(
+                        leading: Icon(Icons.delete),
+                        title: Text('Excluir'),
+                      ),
+                    ),
+                  ],
+                  onSelected: (value) => print(value),
+                )
               ],
             ),
             Row(
               children: [
-                TaskCardUrgency(urgency: urgency),
+                TaskCardUrgency(urgency: widget.task.urgency),
                 const SizedBox(
                   width: 5,
                 ),
-                category != null
-                    ? TaskCardCategory(category: category!)
-                    : const SizedBox(),
+                TaskCardCategory(category: widget.task.category),
               ],
             ),
             Row(
@@ -63,14 +75,23 @@ class TaskCard extends StatelessWidget {
                       width: 10,
                     ),
                     Text(
-                      '${date.day}/${date.month < 10 ? '0${date.month}' : date.month}/${date.year}',
+                      '${widget.task.date.day}/${widget.task.date.month < 10 ? '0${widget.task.date.month}' : widget.task.date.month}/${widget.task.date.year}',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
                 IconButton(
-                    onPressed: () => print('clicked'),
-                    icon: const Icon(Icons.check)),
+                    onPressed: () {
+                      if (widget.task.status != Status.completed) {
+                        widget.onPressed();
+                      }
+                    },
+                    icon: widget.task.status == Status.completed
+                        ? const Icon(
+                            Icons.check_circle_rounded,
+                            color: Colors.green,
+                          )
+                        : const Icon(Icons.check)),
               ],
             )
           ],
