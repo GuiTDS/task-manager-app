@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_management_app/pages/home_page.dart';
+import 'package:task_management_app/pages/task_page.dart';
 import 'package:task_management_app/repositories/task_repository.dart';
 
 void main() {
@@ -28,7 +28,10 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
         fontFamily: 'Poppins',
       ),
-      home: const HomePage(),
+      routes: {
+        '/taskPage': (context) => const TaskPage(),
+      },
+      initialRoute: '/taskPage',
     );
   }
 }

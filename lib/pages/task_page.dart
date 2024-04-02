@@ -48,6 +48,9 @@ class _TaskPageState extends State<TaskPage> {
     setState(() {
       taskRepository.completeTask(task);
     });
+    return ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Task completed')),
+    );
   }
 
   @override

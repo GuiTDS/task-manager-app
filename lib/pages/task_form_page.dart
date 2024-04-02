@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:task_management_app/models/task_model.dart';
-import 'package:task_management_app/pages/task_page.dart';
 import 'package:task_management_app/repositories/task_repository.dart';
 
 class TaskFormPage extends StatefulWidget {
@@ -20,6 +19,7 @@ class _TaskFormPageState extends State<TaskFormPage> {
   final _dateFormat = DateFormat('dd/MM/yyyy');
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -57,6 +57,7 @@ class _TaskFormPageState extends State<TaskFormPage> {
       body: SingleChildScrollView(
         reverse: true,
         child: Form(
+          key: _formKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 30),
             child: Column(
@@ -69,6 +70,12 @@ class _TaskFormPageState extends State<TaskFormPage> {
                     print(_titleController.text);
                   },
                   controller: _titleController,
+                  validator: (String? value) {
+                    if (value != null && value.isEmpty) {
+                      return 'Please fill the title';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(
                   height: 20,
@@ -92,6 +99,12 @@ class _TaskFormPageState extends State<TaskFormPage> {
                       selectedUrgency = value!;
                     });
                   },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select urgency';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(
                   height: 20,
@@ -113,6 +126,12 @@ class _TaskFormPageState extends State<TaskFormPage> {
                       selectedCategory = value!;
                     });
                   },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select a category';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(
                   height: 20,
@@ -127,6 +146,12 @@ class _TaskFormPageState extends State<TaskFormPage> {
                       onPressed: () => _selectDate(context),
                     ),
                   ),
+                  validator: (value) {
+                    if (value != null && value.isEmpty) {
+                      return 'Please select a valid date';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(
                   height: 30,
@@ -137,22 +162,31 @@ class _TaskFormPageState extends State<TaskFormPage> {
                           EdgeInsets.symmetric(horizontal: 30)),
                     ),
                     onPressed: () {
-                      List<String> date = _dateController.text.split('/');
-                      TaskModel task = TaskModel(
-                          title: _titleController.text,
-                          urgency: selectedUrgency!,
-                          category: selectedCategory!,
-                          date: DateTime(int.parse(date[2]),
-                              int.parse(date[1]), int.parse(date[0])),
-                          status: Status.toDo);
-                      taskRepository.save(task);
+                      if (_formKey.currentState!.validate()) {
+                        List<String> date = _dateController.text.split('/');
+                        TaskModel task = TaskModel(
+                            title: _titleController.text,
+                            urgency: selectedUrgency!,
+                            category: selectedCategory!,
+                            date: DateTime(int.parse(date[2]),
+                                int.parse(date[1]), int.parse(date[0])),
+                            status: Status.toDo);
+                        taskRepository.save(task);
 
-                       Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const TaskPage(),
-                          )); 
-                      // Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Task created')),
+                        );
+
+                        /* Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const TaskPage(),
+                            )); */
+
+                        // Navigator.pop(context);
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/taskPage', (route) => false);
+                      }
                     },
                     icon: const Icon(Icons.add, color: Colors.black),
                     label: const Text(
