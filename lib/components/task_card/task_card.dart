@@ -93,7 +93,12 @@ class _TaskCardState extends State<TaskCard> {
                             onPressed: () {
                               widget.onPressedReview();
                             },
-                            icon: const Icon(Icons.edit_note),
+                            icon: Icon(
+                              Icons.edit_note,
+                              color: widget.task.status == Status.inReview
+                                  ? Colors.blue[300]
+                                  : Colors.black,
+                            ),
                           ),
                     IconButton(
                       onPressed: () {
