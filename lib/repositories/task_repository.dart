@@ -27,15 +27,29 @@ class TaskRepository extends ChangeNotifier {
   }
 
   movoToReview(TaskModel task) {
-    _todoList.remove(task);
-    _inReviewList.add(task);
+    if (task.status != Status.inReview) {
+      task.status = Status.inReview;
+      _todoList.remove(task);
+      _inReviewList.add(task);
+    } else {
+      task.status = Status.toDo;
+      _inReviewList.remove(task);
+      _todoList.add(task);
+    }
     notifyListeners();
   }
 
   completeTask(TaskModel task) {
-    task.status = Status.completed;
-    _todoList.remove(task);
-    _completedList.add(task);
+    if (task.status != Status.completed) {
+      task.status = Status.completed;
+      _todoList.remove(task);
+      _completedList.add(task);
+    } else {
+      task.status = Status.toDo;
+      _completedList.remove(task);
+      _todoList.add(task);
+    }
+
     notifyListeners();
   }
 }

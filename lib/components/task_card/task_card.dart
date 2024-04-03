@@ -5,8 +5,13 @@ import 'package:task_management_app/models/task_model.dart';
 
 class TaskCard extends StatefulWidget {
   final TaskModel task;
-  final VoidCallback onPressed;
-  const TaskCard({super.key, required this.task, required this.onPressed});
+  final VoidCallback onPressedComplete;
+  final VoidCallback onPressedReview;
+  const TaskCard(
+      {super.key,
+      required this.task,
+      required this.onPressedComplete,
+      required this.onPressedReview});
 
   @override
   State<TaskCard> createState() => _TaskCardState();
@@ -75,23 +80,34 @@ class _TaskCardState extends State<TaskCard> {
                       width: 10,
                     ),
                     Text(
-                      '${widget.task.date.day}/${widget.task.date.month < 10 ? '0${widget.task.date.month}' : widget.task.date.month}/${widget.task.date.year}',
+                      '${widget.task.date.day < 10 ? '0${widget.task.date.day}' : widget.task.date.day}/${widget.task.date.month < 10 ? '0${widget.task.date.month}' : widget.task.date.month}/${widget.task.date.year}',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-                IconButton(
-                    onPressed: () {
-                      if (widget.task.status != Status.completed) {
-                        widget.onPressed();
-                      }
-                    },
-                    icon: widget.task.status == Status.completed
-                        ? const Icon(
-                            Icons.check_circle_rounded,
-                            color: Colors.green,
-                          )
-                        : const Icon(Icons.check)),
+                Row(
+                  children: [
+                    widget.task.status == Status.completed
+                        ? Container()
+                        : IconButton(
+                            onPressed: () {
+                              widget.onPressedReview();
+                            },
+                            icon: const Icon(Icons.edit_note),
+                          ),
+                    IconButton(
+                      onPressed: () {
+                        widget.onPressedComplete();
+                      },
+                      icon: widget.task.status == Status.completed
+                          ? const Icon(
+                              Icons.check_circle_rounded,
+                              color: Colors.green,
+                            )
+                          : const Icon(Icons.check),
+                    ),
+                  ],
+                ),
               ],
             )
           ],

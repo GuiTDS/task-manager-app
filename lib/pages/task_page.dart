@@ -48,8 +48,23 @@ class _TaskPageState extends State<TaskPage> {
     setState(() {
       taskRepository.completeTask(task);
     });
+    final String message = task.status == Status.completed
+        ? 'Task Completed'
+        : 'Task moved to To Do';
     return ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Task completed')),
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  reviewTask(TaskModel task) {
+    setState(() {
+      taskRepository.movoToReview(task);
+    });
+    final String message = task.status == Status.inReview
+        ? 'Task moved for review'
+        : 'Task moved to To Do';
+    return ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
     );
   }
 
@@ -144,7 +159,8 @@ class _TaskPageState extends State<TaskPage> {
                         const EdgeInsets.only(left: 18, right: 18, bottom: 75),
                     itemBuilder: (context, index) => TaskCard(
                       task: currList[index],
-                      onPressed: () => completeTask(currList[index]),
+                      onPressedComplete: () => completeTask(currList[index]),
+                      onPressedReview: () => reviewTask(currList[index]),
                     ),
                     itemCount: currList.length,
                     separatorBuilder: (context, index) => const SizedBox(
