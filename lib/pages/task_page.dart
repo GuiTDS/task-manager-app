@@ -68,6 +68,15 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
+  deleteTask(TaskModel task) {
+    setState(() {
+      taskRepository.deleteTask(task);
+    });
+    const String message = 'Task Deleted';
+    return ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text(message)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,6 +170,7 @@ class _TaskPageState extends State<TaskPage> {
                       task: currList[index],
                       onPressedComplete: () => completeTask(currList[index]),
                       onPressedReview: () => reviewTask(currList[index]),
+                      onPressedDelete: () => deleteTask(currList[index]),
                     ),
                     itemCount: currList.length,
                     separatorBuilder: (context, index) => const SizedBox(

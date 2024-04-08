@@ -8,11 +8,13 @@ class TaskCard extends StatefulWidget {
   final TaskModel task;
   final VoidCallback onPressedComplete;
   final VoidCallback onPressedReview;
+  final VoidCallback onPressedDelete;
   const TaskCard(
       {super.key,
       required this.task,
       required this.onPressedComplete,
-      required this.onPressedReview});
+      required this.onPressedReview,
+      required this.onPressedDelete});
 
   @override
   State<TaskCard> createState() => _TaskCardState();
@@ -60,7 +62,9 @@ class _TaskCardState extends State<TaskCard> {
                           Icons.delete,
                           color: Colors.black,
                         ),
-                        onPressed: () => print(''),
+                        onPressed: () {
+                          widget.onPressedDelete();
+                        },
                       )),
                 ],
               ),

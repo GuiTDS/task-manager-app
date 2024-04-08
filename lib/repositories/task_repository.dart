@@ -65,8 +65,12 @@ class TaskRepository extends ChangeNotifier {
 
   completeTask(TaskModel task) {
     if (task.status != Status.completed) {
+      if (task.status == Status.toDo) {
+        _todoList.remove(task);
+      } else {
+        _inReviewList.remove(task);
+      }
       task.status = Status.completed;
-      _todoList.remove(task);
       _completedList.add(task);
     } else {
       task.status = Status.toDo;
@@ -74,6 +78,17 @@ class TaskRepository extends ChangeNotifier {
       _todoList.add(task);
     }
 
+    notifyListeners();
+  }
+
+  deleteTask(TaskModel task) {
+    if (task.status == Status.toDo) {
+      _todoList.remove(task);
+    } else if (task.status == Status.inReview) {
+      _inReviewList.remove(task);
+    } else {
+      _completedList.remove(task);
+    }
     notifyListeners();
   }
 }
