@@ -11,10 +11,14 @@ This is a simple task management application developed in Flutter, where you can
 
 ## Screenshots
 
-| Main screen with task list and filter buttons |
-| ![Task Page](image.png) |
-| Add/edit task screen |
-| ![Task form](image-1.png) |
+| Main screen with task list and filter buttons | Main screen with tasks |
+|-----------------------------------------------|------------------------|
+| ![Task Page](image.png) | ![Task Page with Tasks](https://github.com/GuiTDS/task-manager-app/assets/92134700/dab56591-fa81-4f09-85d1-627c9bdb1387) |
+
+| Add task screen | Edit task screen |
+|----------------------|----------------------|
+| ![Task form](image-1.png) | ![image](https://github.com/GuiTDS/task-manager-app/assets/92134700/48a0cf38-5cba-4eb7-8972-9a6f482ec062) |
+
 
 ## Prerequisites
 
@@ -36,24 +40,27 @@ flutter run
 
 ## Used Packages
 
-- provider: ^5.0.0
+- intl: ^0.19.0
+- provider: ^6.1.2
 
 ## Project Structure
-lib/
-|- components/
-| |- task_card/
-| | |-task_card_category.dart
-| | |-task_card_urgency.dart
-| | |-task_card.dart
-|- models/
-| |- task_model.dart
-|- pages/
-| |- home_page.dart
-| |- task_form_page.dart
-| |- task_page.dart
-|- repositories/
-| |- task_repository.dart
 
+```shell
+  .
+  ├── lib/
+      └── components/
+          └── task_card_category.dart
+          └── task_card_urgency.dart
+          └── task_card.dart
+      └── models/
+          └── task_model.dart   
+      └── pages/
+          └── home_page.dart
+          └── task_form_page.dart
+          └── task_page.dart
+      └── repositories/
+          └── task_repository.dart
+```
 
 ## How to Use
 
