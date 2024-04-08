@@ -17,7 +17,7 @@ class TaskModel {
   final String title;
   final Urgency urgency;
   final Category category;
-  final DateTime date;
+  final String date;
   Status status;
 
   TaskModel(

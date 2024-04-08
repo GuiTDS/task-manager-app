@@ -5,20 +5,37 @@ import 'package:task_management_app/models/task_model.dart';
 import 'package:task_management_app/repositories/task_repository.dart';
 
 class TaskFormPage extends StatefulWidget {
-  const TaskFormPage({Key? key}) : super(key: key);
+  final TaskModel? oldTask;
+  const TaskFormPage({Key? key, this.oldTask}) : super(key: key);
 
   @override
   State<TaskFormPage> createState() => _TaskFormPageState();
 }
 
 class _TaskFormPageState extends State<TaskFormPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.oldTask == null) {
+      selectedCategory = null;
+      selectedUrgency = null;
+    } else {
+      selectedCategory = widget.oldTask?.category;
+      selectedUrgency = widget.oldTask?.urgency;
+      _titleController = TextEditingController(text: widget.oldTask?.title);
+      _dateController =
+          TextEditingController(text: widget.oldTask?.date.toString());
+    }
+  }
+
   late TaskRepository taskRepository;
   Urgency? selectedUrgency;
   Category? selectedCategory;
   DateTime? _selectedDate;
   final _dateFormat = DateFormat('dd/MM/yyyy');
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   Future<void> _selectDate(BuildContext context) async {
@@ -34,6 +51,24 @@ class _TaskFormPageState extends State<TaskFormPage> {
         _dateController.text = _dateFormat.format(picked);
       });
     }
+    print(_dateController.text);
+  }
+
+  saveTask() {
+    TaskModel task = TaskModel(
+        title: _titleController.text,
+        urgency: selectedUrgency!,
+        category: selectedCategory!,
+        date: _dateController.text,
+        status: Status.toDo);
+    bool isSaved = taskRepository.save(task, widget.oldTask);
+    if (isSaved) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content:
+                Text(widget.oldTask == null ? 'Task Created' : 'Task Updated')),
+      );
+    }
   }
 
   @override
@@ -46,9 +81,9 @@ class _TaskFormPageState extends State<TaskFormPage> {
           Icons.view_list_rounded,
           size: 30,
         ),
-        title: const Text(
-          'Create new task',
-          style: TextStyle(
+        title: Text(
+          widget.oldTask == null ? 'Create new task' : 'Update Task',
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 28,
           ),
@@ -163,35 +198,15 @@ class _TaskFormPageState extends State<TaskFormPage> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        List<String> date = _dateController.text.split('/');
-                        TaskModel task = TaskModel(
-                            title: _titleController.text,
-                            urgency: selectedUrgency!,
-                            category: selectedCategory!,
-                            date: DateTime(int.parse(date[2]),
-                                int.parse(date[1]), int.parse(date[0])),
-                            status: Status.toDo);
-                        taskRepository.save(task);
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Task created')),
-                        );
-
-                        /* Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const TaskPage(),
-                            )); */
-
-                        // Navigator.pop(context);
+                        saveTask();
                         Navigator.pushNamedAndRemoveUntil(
                             context, '/taskPage', (route) => false);
                       }
                     },
                     icon: const Icon(Icons.add, color: Colors.black),
-                    label: const Text(
-                      'Add Task',
-                      style: TextStyle(
+                    label: Text(
+                      widget.oldTask == null ? 'Add Task' : 'Save',
+                      style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),

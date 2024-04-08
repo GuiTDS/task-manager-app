@@ -21,9 +21,33 @@ class TaskRepository extends ChangeNotifier {
     return todoList;
   }
 
-  save(TaskModel task) {
-    _todoList.add(task);
+  save(TaskModel task, TaskModel? oldTask) {
+    bool sucess = true;
+    if (oldTask == null) {
+      _todoList.add(task);
+    } else {
+      if (task.title != oldTask.title ||
+          task.category != oldTask.category ||
+          task.date != oldTask.date ||
+          task.urgency != oldTask.urgency) {
+        print('TASKS DIFERENTES');
+        if (oldTask.status == Status.toDo) {
+          _todoList.remove(oldTask);
+          _todoList.add(task);
+        } else if (oldTask.status == Status.inReview) {
+          _inReviewList.remove(oldTask);
+          _inReviewList.add(task);
+        } else {
+          _todoList.remove(oldTask);
+          _todoList.add(task);
+        }
+      } else {
+        sucess = false;
+      }
+    }
+
     notifyListeners();
+    return sucess;
   }
 
   movoToReview(TaskModel task) {
