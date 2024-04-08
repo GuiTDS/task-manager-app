@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:task_management_app/pages/profile_page.dart';
 import 'package:task_management_app/pages/task_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -33,7 +32,6 @@ class _HomePageState extends State<HomePage> {
         physics: const NeverScrollableScrollPhysics(),
         children: const [
           TaskPage(),
-          ProfilePage(),
         ],
         onPageChanged: (page) {
           if (page != actualPage) {
